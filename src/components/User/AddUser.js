@@ -8,16 +8,21 @@ const initialState = { username: "", age: "" };
 
 const AddUser = (props) => {
   const [userInfo, setUserInfo] = useState(initialState);
+  const [isInputValid, setIsInputValid] = useState(true); 
   const userInfoChangeHandler = (input, value) => {
     setUserInfo((prevInfo) => ({ ...prevInfo, [input]: value }));
   };
   const submitHandler = (event) => {
     event.preventDefault();
+    if(!userInfo.username) {
+      setIsInputValid(false);
+      return;
+    }
     props.onSaveUserInfo(userInfo);
     setUserInfo(initialState);
   };
   return (
-    <Card>
+    <Card className={styles.input}>
       <form onSubmit={submitHandler}>
         <label htmlFor="username">Username</label>
         <input
@@ -25,7 +30,6 @@ const AddUser = (props) => {
           onChange={(event) =>
             userInfoChangeHandler("username", event.target.value)
           }
-          className={styles.input}
           type="text"
           id="username"
         />
@@ -33,12 +37,12 @@ const AddUser = (props) => {
         <input
           value={userInfo.age}
           onChange={(event) => userInfoChangeHandler("age", event.target.value)}
-          className={styles.input}
           type="number"
           id="age"
         />
         <Button type="submit">Add User</Button>
       </form>
+      {!isInputValid && <ErrorModal/>}
     </Card>
   );
 };
