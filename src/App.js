@@ -7,6 +7,7 @@ function App() {
   const [userData, setUserData] = useState();
   const userInfoHandler = (userInfo) => {
     setUserData({ ...userInfo, id: Math.random().toString() });
+    console.log(userInfo)
   };
   if (userData) {
     usersInfoList.push(userData);
